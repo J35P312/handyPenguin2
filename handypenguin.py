@@ -54,9 +54,15 @@ for f in files:
 		continue
 
 	name=f.split("_")[-1].split(".")[0]
-	outfile="{}_nipt_rml.json".format(name)
+	try:
+		os.mkdir(name)
+	except:
+		pass
+
+	outfile="{}/{}_NIPT.json".format(name,name)
 	o=open(outfile,"w")
 	
+
 	sample_data=[]
 
 	wb = xlrd.open_workbook(f.strip())
@@ -94,3 +100,7 @@ for f in files:
 	main_template["samples"]=sample_data
 	o.write(json.dumps(main_template,indent=4)) 
 	o.close()
+	try:
+		os.rename(f, "{}/{}".format(name,f))
+	except:
+		pass
