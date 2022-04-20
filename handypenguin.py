@@ -16,7 +16,7 @@ sample_template={
       "name": "SampleName",
       "application": "RMLP05R800",
       "data_analysis": "fluffy",
-      "data_delivery": "Statina",
+      "data_delivery": "statina",
       "comment": "",
       "control": "",
       "volume": "200",
