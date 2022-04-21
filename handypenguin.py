@@ -59,7 +59,7 @@ for f in files:
 	except:
 		pass
 
-	outfile="{}/{}_NIPT.json".format(name,name)
+	outfile="{}/{}_nipt_rml.json".format(name,name)
 	o=open(outfile,"w")
 	
 
@@ -92,11 +92,11 @@ for f in files:
 			sample_data[-1]["index_sequence"]=index_per_well[ well ]
 			#sample_data[-1]["index"]=index_id_per_well[ well ]
 
-		sample_data[-1]["pool"]=name
+		sample_data[-1]["pool"]=name+"_NIPT"
 		sample_data[-1]["concentration_sample"]=str(sheet.cell_value(i, 3))
 
 
-	main_template["name"]=str(name)
+	main_template["name"]=str(name)+"_NIPT"
 	main_template["samples"]=sample_data
 	o.write(json.dumps(main_template,indent=4)) 
 	o.close()
