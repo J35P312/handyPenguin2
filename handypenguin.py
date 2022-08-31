@@ -58,11 +58,7 @@ for f in files:
 		os.mkdir(name)
 	except:
 		pass
-
-	outfile="{}/{}_nipt_rml.json".format(name,name)
-	o=open(outfile,"w")
 	
-
 	sample_data=[]
 
 	wb = xlrd.open_workbook(f.strip())
@@ -71,6 +67,7 @@ for f in files:
 	index_per_well={}
 	index_id_per_well={}
 
+	missing_index=False
 	for i in range(1,sheet.nrows):
 		sample_data.append(copy.deepcopy(sample_template))
 		sample_data[-1]["name"]=sheet.cell_value(i, 2)
@@ -91,6 +88,8 @@ for f in files:
 			sample_data[-1]["index_number"]=str(index_per_well[ well ].split(" ")[0].replace("UDI",""))
 			sample_data[-1]["index_sequence"]=index_per_well[ well ]
 			#sample_data[-1]["index"]=index_id_per_well[ well ]
+		else:
+			missing_index=True
 
 		sample_data[-1]["pool"]=name+"_NIPT"
 		sample_data[-1]["concentration_sample"]=str(sheet.cell_value(i, 3))
@@ -98,6 +97,15 @@ for f in files:
 
 	main_template["name"]=str(name)+"_NIPT"
 	main_template["samples"]=sample_data
+	if missing_index:
+		outfile="{}/FEL.txt".format(name,name)
+		o=open(outfile,"w")
+		o.write("Index saknas! Ange set1 eller set2 i \"Index Plate\" kolumnen.")
+		o.close()
+		continue
+
+	outfile="{}/{}_nipt_rml.json".format(name,name)
+	o=open(outfile,"w")
 	o.write(json.dumps(main_template,indent=4)) 
 	o.close()
 	try:
